@@ -1,14 +1,11 @@
 import DashboardStats from "../components/admin/dashboard";
 import Navbar from "../components/admin/navbar";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tab";
-
 import { AssignmentCard } from "../components/admin/AssignmentCard";
 import { CourseCard } from "../components/admin/CourseCard";
-
-import { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 
 import {
   CalendarDays,
@@ -100,7 +97,11 @@ function Admin() {
   ];
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <Navbar
+        userName="John Doe"
+        userRole={userRole}
+        notifications={5}
+      />
       <main className="container mx-auto px-4 py-6">
         {/* welcome section */}
         <div className="mb-8">
@@ -137,7 +138,7 @@ function Admin() {
                     My Courses
                   </h2>
                   <Button>
-                    <Plus className="h-4 w-4 mr-2"/>
+                    <Plus className="h-4 w-4 mr-2" />
                     New Course
                   </Button>
                 </div>
@@ -168,28 +169,113 @@ function Admin() {
                 </div>
                 <div className="grid gap-4 ">
                   {sampleAssignments.map((assignment) => (
-                  <AssignmentCard
-                    key={assignment.id}
-                    title={assignment.title}
-                    course={assignment.instructor}
-                    description={assignment.description}
-                    dueDate={new Date()} // Replace with actual due date if available
-                    status={assignment.status}
-                    points={100}
-                    submissions={10}
-                    totalStudents={20}
-                    userRole={userRole}
-                  />
-                ))}
+                    <AssignmentCard
+                      key={assignment.id}
+                      title={assignment.title}
+                      course={assignment.instructor}
+                      description={assignment.description}
+                      dueDate={new Date()} // Replace with actual due date if available
+                      status={assignment.status}
+                      points={100}
+                      submissions={10}
+                      totalStudents={20}
+                      userRole={userRole}
+                    />
+                  ))}
                 </div>
               </TabsContent>
 
             </Tabs>
           </div>
           {/* sidebar */}
-          {/* <div className="space-y-6">
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Quick Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button variant="outline" className="w-full justify-start">
+                  <CalendarDays className="h-4 w-4 mr-2" />
+                  View Schedule
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Discussion Forums
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Users className="h-4 w-4 mr-2" />
+                  {userRole === "student" ? "Study Groups" : "Student Analytics"}
+                </Button>
+              </CardContent>
+            </Card>
 
-          </div> */}
+            {/* Recent Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start space-x-3">
+                    <div className="h-2 w-2 rounded-full bg-primary mt-2" />
+                    <div>
+                      <p className="font-medium">Assignment submitted</p>
+                      <p className="text-muted-foreground">React Component Building</p>
+                      <p className="text-xs text-muted-foreground">2 hours ago</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="h-2 w-2 rounded-full bg-success mt-2" />
+                    <div>
+                      <p className="font-medium">Course completed</p>
+                      <p className="text-muted-foreground">Advanced JavaScript</p>
+                      <p className="text-xs text-muted-foreground">1 day ago</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="h-2 w-2 rounded-full bg-warning mt-2" />
+                    <div>
+                      <p className="font-medium">New announcement</p>
+                      <p className="text-muted-foreground">UI/UX Design Principles</p>
+                      <p className="text-xs text-muted-foreground">3 days ago</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Upcoming Deadlines */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CalendarDays className="h-5 w-5" />
+                  Upcoming Deadlines
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium">Design Portfolio</p>
+                      <p className="text-xs text-muted-foreground">Due in 7 days</p>
+                    </div>
+                    <Badge variant="outline">150 pts</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium">React Component</p>
+                      <p className="text-xs text-muted-foreground">Due in 3 days</p>
+                    </div>
+                    <Badge variant="outline">100 pts</Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </main>
     </div>
