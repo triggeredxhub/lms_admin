@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import api from '../../src/api/http'; // adjust path based on your structure
+import api from '../../src/api/api'; // adjust path based on your structure
 
 function Home() {
   const [message, setMessage] = useState('');
