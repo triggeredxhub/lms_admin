@@ -6,6 +6,7 @@ import { CourseCard } from "../components/admin/CourseCard";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
+import { logout } from "../services/authService";
 
 import {
   CalendarDays,
@@ -95,12 +96,22 @@ function Admin() {
       status: "completed",
     },
   ];
+  function Logout() {
+    logout();
+  }
   return (
     <div className="min-h-screen bg-background">
       <Navbar
         userName="John Doe"
         userRole={userRole}
         notifications={5}
+        onLogoutClick={Logout}
+        onProfileClick={() => { }}
+        onSettingsClick={() => { }}
+        onSearch={(query) => {
+          // Do something with the search query
+          console.log("Searching for:", query);
+        }}
       />
       <main className="container mx-auto px-4 py-6">
         {/* welcome section */}

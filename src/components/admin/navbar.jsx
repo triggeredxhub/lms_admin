@@ -1,7 +1,5 @@
-import SearchBar from "../ui/searchBar";
-import ProfileDropdown from "../ui/profileDropdown";
-
-import { Button, } from "../ui/button";
+import React, { useState } from "react";
+import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Badge } from "../ui/badge";
 import {
@@ -13,9 +11,26 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown";
 
-import { Bell, Search, User, Settings, LogOut, BookOpen, GraduationCap } from "lucide-react"
+import {
+  Bell,
+  Search,
+  User,
+  Settings,
+  LogOut,
+  BookOpen,
+  GraduationCap,
+} from "lucide-react";
 
-export function Navbar({ userRole, userName, notifications = 0 }) {
+export function Navbar({
+  userRole,
+  userName,
+  notifications = 0,
+  onLogoutClick,
+  onProfileClick,
+  onSettingsClick,
+  onSearch,
+}) {
+  const [searchValue, setSearchValue] = useState("");
   const getRoleIcon = () => {
     switch (userRole) {
       case "instructor":
@@ -41,6 +56,16 @@ export function Navbar({ userRole, userName, notifications = 0 }) {
     );
   };
 
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter" && onSearch) {
+      onSearch(searchValue);
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -51,7 +76,9 @@ export function Navbar({ userRole, userName, notifications = 0 }) {
               <div className="rounded-md bg-gradient-primary p-2">
                 <BookOpen className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-semibold text-gray-800 hidden md:inline lg:inline">LMS</span>
+              <span className="text-xl font-semibold text-gray-800 hidden md:inline lg:inline">
+                LMS
+              </span>
             </div>
           </div>
 
@@ -60,6 +87,9 @@ export function Navbar({ userRole, userName, notifications = 0 }) {
             <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <input
+                value={searchValue}
+                onChange={handleInputChange}
+                onKeyDown={handleInputKeyDown}
                 placeholder="Search courses, assignments..."
                 className="w-full pl-8 pr-4 py-2 text-sm bg-muted/50 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
@@ -90,7 +120,11 @@ export function Navbar({ userRole, userName, notifications = 0 }) {
                   className=" rounded-full p-0 overflow-hidden focus:outline-none focus-visible:ring-white"
                 >
                   <Avatar className="  w-10 h-10 rounded-full">
-                    <AvatarImage className="h-full w-full" src="" alt={userName} />
+                    <AvatarImage
+                      className="h-full w-full"
+                      src=""
+                      alt={userName}
+                    />
                     <AvatarFallback className="h-full w-full flex items-center justify-center rounded-full bg-primary  text-white">
                       {userName.charAt(0).toUpperCase()}
                     </AvatarFallback>
@@ -111,21 +145,25 @@ export function Navbar({ userRole, userName, notifications = 0 }) {
                       </p>
                     </div>
                     <p className="text-xs leading-none text-muted-foreground">
-                      {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Account
+                      {userRole.charAt(0).toUpperCase() + userRole.slice(1)}{" "}
+                      Account
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={onProfileClick}>
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={onSettingsClick}>
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive focus:text-destructive">
+                <DropdownMenuItem
+                  className="text-destructive focus:text-destructive"
+                  onSelect={onLogoutClick}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>

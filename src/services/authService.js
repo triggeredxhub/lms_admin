@@ -14,7 +14,7 @@ export const login = async (email, password) => {
 };
 
 
-const logout = () => {
+export const logout = () => {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(ROLE_KEY);
   localStorage.removeItem(USER_TYPE_KEY);
