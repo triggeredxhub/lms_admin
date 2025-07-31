@@ -7,6 +7,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { logout } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 import {
   CalendarDays,
@@ -21,7 +22,10 @@ import {
 
 
 function Admin() {
-  const userRole = "admin";
+  const userRole = localStorage.getItem("role");
+  const userId = localStorage.getItem("userId");
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
 
   // Sample data
   const sampleCourses = [
@@ -96,16 +100,17 @@ function Admin() {
       status: "completed",
     },
   ];
-  function Logout() {
+  const handleLogout = () => {
     logout();
-  }
+    window.location.href = "/login";
+  };
   return (
     <div className="min-h-screen bg-background">
       <Navbar
-        userName="John Doe"
+        userName={firstName}
         userRole={userRole}
         notifications={5}
-        onLogoutClick={Logout}
+        onLogoutClick={handleLogout}
         onProfileClick={() => { }}
         onSettingsClick={() => { }}
         onSearch={(query) => {
@@ -118,7 +123,7 @@ function Admin() {
         <div className="mb-8">
           <div className="relative overflow-hidden rounded-lg bg-gradient-hero p-8 text-primary-foreground">
             <div className="relative z-10">
-              <h1 className="text-3xl font-bold mb-2">Welcome back, John</h1>
+              <h1 className="text-3xl font-bold mb-2">Welcome back, {firstName}</h1>
               <p className="text-primary-foreground/90 mb-4">
                 Manage your LMS efficiently with our admin tools.
               </p>
